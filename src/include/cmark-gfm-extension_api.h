@@ -1,9 +1,10 @@
 #ifndef CMARK_GFM_EXTENSION_API_H
 #define CMARK_GFM_EXTENSION_API_H
 
-#include "cmark-gfm.h"
-
 #include <stdbool.h>
+#include <stdint.h>
+#include "export.h"
+#include "cmark-gfm.h"
 
 #ifdef __cplusplus
 extern "C" {

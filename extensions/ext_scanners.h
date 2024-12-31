@@ -1,5 +1,8 @@
-#include "chunk.h"
+#ifndef CMARK_GFM_EXT_SCANNERS_H
+#define CMARK_GFM_EXT_SCANNERS_H
+
 #include "cmark-gfm.h"
+#include "export.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -22,3 +25,5 @@ bufsize_t _scan_tasklist(const unsigned char *p);
 #ifdef __cplusplus
 }
 #endif
+
+#endif /* CMARK_GFM_EXT_SCANNERS_H */
