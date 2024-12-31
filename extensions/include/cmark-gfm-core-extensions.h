@@ -9,6 +9,11 @@ extern "C" {
 #endif
 
 #include "cmark-gfm-extension_api.h"
+#include "../table.h"
+#include "../tasklist.h"
+#include "../strikethrough.h"
+#include "../tagfilter.h"
+#include "../autolink.h"
 
 CMARK_GFM_EXPORT
 void cmark_gfm_core_extensions_ensure_registered(void);
