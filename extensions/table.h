@@ -2,8 +2,11 @@
 #define CMARK_GFM_TABLE_H
 
 #include <stdint.h>
+#include "cmark-gfm-extension_api.h"
 #include "export.h"
-#include "cmark-gfm-core-extensions.h"
+
+struct cmark_syntax_extension;
+struct cmark_node;
 
 #ifdef __cplusplus
 extern "C" {

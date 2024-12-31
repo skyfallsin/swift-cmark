@@ -1,8 +1,12 @@
 #ifndef CMARK_GFM_TASKLIST_H
 #define CMARK_GFM_TASKLIST_H
 
+#include <stdbool.h>
+#include "cmark-gfm-extension_api.h"
 #include "export.h"
-#include "cmark-gfm-core-extensions.h"
+
+struct cmark_syntax_extension;
+struct cmark_node;
 
 #ifdef __cplusplus
 extern "C" {
