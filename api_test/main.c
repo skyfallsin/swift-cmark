@@ -801,11 +801,11 @@ static void utf8(test_batch_runner *runner) {
 static void test_char(test_batch_runner *runner, int valid, const char *utf8,
                       const char *msg) {
   char buf[20];
-  sprintf(buf, "((((%s))))", utf8);
+  snprintf(buf, sizeof(buf), "((((%s))))", utf8);
 
   if (valid) {
     char expected[30];
-    sprintf(expected, "<p>((((%s))))</p>\n", utf8);
+    snprintf(expected, sizeof(expected), "<p>((((%s))))</p>\n", utf8);
     test_md_to_html(runner, buf, expected, msg);
   } else {
     test_md_to_html(runner, buf, "<p>((((" UTF8_REPL "))))</p>\n", msg);
@@ -815,7 +815,7 @@ static void test_char(test_batch_runner *runner, int valid, const char *utf8,
 static void test_incomplete_char(test_batch_runner *runner, const char *utf8,
                                  const char *msg) {
   char buf[20];
-  sprintf(buf, "----%s", utf8);
+  snprintf(buf, sizeof(buf), "----%s", utf8);
   test_md_to_html(runner, buf, "<p>----" UTF8_REPL "</p>\n", msg);
 }
 
@@ -825,7 +825,7 @@ static void test_continuation_byte(test_batch_runner *runner,
 
   for (size_t pos = 1; pos < len; ++pos) {
     char buf[20];
-    sprintf(buf, "((((%s))))", utf8);
+    snprintf(buf, sizeof(buf), "((((%s))))", utf8);
     buf[4 + pos] = '\x20';
 
     char expected[50];

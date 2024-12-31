@@ -4,11 +4,6 @@
 import PackageDescription
 
 #if os(Windows)
-    // When building the library on Windows, we do not have proper control of
-    // whether it is being built statically or dynamically.  However, given the
-    // current default of static, we will assume that we are building
-    // statically.  More importantly, should this not hold, this will fail at
-    // link time.
     let cSettings: [CSetting] = [
         .define("CMARK_GFM_STATIC_DEFINE", .when(platforms: [.windows])),
         .define("CMARK_THREADING"),
@@ -16,18 +11,26 @@ import PackageDescription
 #else
     let cSettings: [CSetting] = [
         .define("CMARK_THREADING"),
+        .define("CMARK_STATIC_DEFINE"),
     ]
 #endif
+
+let cxxSettings: [CXXSetting] = [
+    .headerSearchPath("../src/include"),
+    .headerSearchPath("../extensions/include"),
+    .unsafeFlags(["-std=c++11", "-x", "c++"])
+]
 
 let package = Package(
     name: "cmark-gfm",
     products: [
-        // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
             name: "cmark-gfm",
+            type: .static,
             targets: ["cmark-gfm"]),
         .library(
             name: "cmark-gfm-extensions",
+            type: .static,
             targets: ["cmark-gfm-extensions"]),
         .executable(
             name: "cmark-gfm-bin",
@@ -43,7 +46,40 @@ let package = Package(
             "libcmark-gfm.pc.in",
             "CMakeLists.txt",
           ],
-          cSettings: cSettings
+          sources: [
+            "arena.c",
+            "blocks.c",
+            "buffer.c",
+            "cmark.c",
+            "cmark_ctype.c",
+            "commonmark.c",
+            "footnotes.c",
+            "houdini_href_e.c",
+            "houdini_html_e.c",
+            "houdini_html_u.c",
+            "html.c",
+            "inlines.c",
+            "iterator.c",
+            "latex.c",
+            "linked_list.c",
+            "man.c",
+            "map.c",
+            "node.c",
+            "plaintext.c",
+            "plugin.c",
+            "references.c",
+            "registry.c",
+            "render.c",
+            "scanners.c",
+            "syntax_extension.c",
+            "utf8.c",
+            "xml.c",
+          ],
+          cSettings: cSettings + [
+            .headerSearchPath("include"),
+            .headerSearchPath("."),
+            .unsafeFlags(["-x", "c"])
+          ]
         ),
         .target(name: "cmark-gfm-extensions",
           dependencies: [
@@ -54,7 +90,21 @@ let package = Package(
             "CMakeLists.txt",
             "ext_scanners.re",
           ],
-          cSettings: cSettings
+          sources: [
+            "autolink.c",
+            "core-extensions.c",
+            "strikethrough.c",
+            "table.c",
+            "tagfilter.c",
+            "tasklist.c",
+            "ext_scanners.c",
+          ],
+          cSettings: cSettings + [
+            .headerSearchPath("../src/include"),
+            .headerSearchPath("include"),
+            .headerSearchPath("."),
+            .unsafeFlags(["-x", "c"])
+          ]
         ),
         .target(name: "cmark-gfm-bin",
           dependencies: [
@@ -64,6 +114,11 @@ let package = Package(
           path: "bin",
           sources: [
             "main.c",
+          ],
+          cSettings: cSettings + [
+            .headerSearchPath("../src/include"),
+            .headerSearchPath("../extensions/include"),
+            .unsafeFlags(["-x", "c"])
           ]
         ),
         .target(name: "api_test",
@@ -74,7 +129,13 @@ let package = Package(
           path: "api_test",
           exclude: [
             "CMakeLists.txt",
-          ]
+          ],
+          cSettings: cSettings + [
+            .headerSearchPath("../src/include"),
+            .headerSearchPath("../extensions/include"),
+            .unsafeFlags(["-x", "c"])
+          ],
+          cxxSettings: cxxSettings
         )
     ]
 )
